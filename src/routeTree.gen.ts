@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as NuevaMetaRouteImport } from './routes/nueva-meta'
 import { Route as LogrosRouteImport } from './routes/logros'
 import { Route as IndexRouteImport } from './routes/index'
 
+const NuevaMetaRoute = NuevaMetaRouteImport.update({
+  id: '/nueva-meta',
+  path: '/nueva-meta',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LogrosRoute = LogrosRouteImport.update({
   id: '/logros',
   path: '/logros',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/logros': typeof LogrosRoute
+  '/nueva-meta': typeof NuevaMetaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/logros': typeof LogrosRoute
+  '/nueva-meta': typeof NuevaMetaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/logros': typeof LogrosRoute
+  '/nueva-meta': typeof NuevaMetaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/logros'
+  fullPaths: '/' | '/logros' | '/nueva-meta'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/logros'
-  id: '__root__' | '/' | '/logros'
+  to: '/' | '/logros' | '/nueva-meta'
+  id: '__root__' | '/' | '/logros' | '/nueva-meta'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LogrosRoute: typeof LogrosRoute
+  NuevaMetaRoute: typeof NuevaMetaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/nueva-meta': {
+      id: '/nueva-meta'
+      path: '/nueva-meta'
+      fullPath: '/nueva-meta'
+      preLoaderRoute: typeof NuevaMetaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/logros': {
       id: '/logros'
       path: '/logros'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LogrosRoute: LogrosRoute,
+  NuevaMetaRoute: NuevaMetaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
