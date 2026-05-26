@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { BottomNav } from "@/components/bottom-nav";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -113,7 +115,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <div className="mx-auto min-h-screen max-w-md pb-28">
+        <Outlet />
+      </div>
+      <BottomNav />
+      <Toaster theme="dark" position="top-center" />
     </QueryClientProvider>
   );
 }
