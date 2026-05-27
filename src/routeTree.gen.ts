@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as NuevaMetaRouteImport } from './routes/nueva-meta'
 import { Route as LogrosRouteImport } from './routes/logros'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NuevaMetaRoute = NuevaMetaRouteImport.update({
   id: '/nueva-meta',
   path: '/nueva-meta',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/logros': typeof LogrosRoute
   '/nueva-meta': typeof NuevaMetaRoute
+  '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/logros': typeof LogrosRoute
   '/nueva-meta': typeof NuevaMetaRoute
+  '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/logros': typeof LogrosRoute
   '/nueva-meta': typeof NuevaMetaRoute
+  '/welcome': typeof WelcomeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/logros' | '/nueva-meta'
+  fullPaths: '/' | '/logros' | '/nueva-meta' | '/welcome'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/logros' | '/nueva-meta'
-  id: '__root__' | '/' | '/logros' | '/nueva-meta'
+  to: '/' | '/logros' | '/nueva-meta' | '/welcome'
+  id: '__root__' | '/' | '/logros' | '/nueva-meta' | '/welcome'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LogrosRoute: typeof LogrosRoute
   NuevaMetaRoute: typeof NuevaMetaRoute
+  WelcomeRoute: typeof WelcomeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/nueva-meta': {
       id: '/nueva-meta'
       path: '/nueva-meta'
@@ -89,7 +106,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LogrosRoute: LogrosRoute,
   NuevaMetaRoute: NuevaMetaRoute,
+  WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
