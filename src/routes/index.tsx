@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Sparkles, RotateCcw, Flame } from "lucide-react";
+import { Sparkles, RotateCcw, Flame, Plus, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,23 +19,45 @@ import { useHabits } from "@/hooks/use-habits";
 import {
   HABIT_PRESETS,
   MOTIVATIONAL_MESSAGES,
-  daysSince,
+  minutesToMidnight,
+  todayKey,
   type Habit,
 } from "@/lib/soberlife";
+import { getAddiction } from "@/lib/addictions";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
 function getEmoji(h: Habit) {
+  if (h.addictionId) {
+    const a = getAddiction(h.addictionId);
+    if (a) return a.emoji;
+  }
   return HABIT_PRESETS.find((p) => p.value === h.type)?.emoji ?? "✨";
 }
 
 function Dashboard() {
-  const { habits, ready, resetHabit } = useHabits();
-  const [message] = React.useState(
-    () => MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)],
-  );
+  const { habits, ready, resetHabit, incrementDay } = useHabits();
+  const [message, setMessage] = React.useState(MOTIVATIONAL_MESSAGES[0]);
+  React.useEffect(() => {
+    setMessage(
+      MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)],
+    );
+  }, []);
+
+  const [minsLeft, setMinsLeft] = React.useState<number | null>(null);
+  React.useEffect(() => {
+    const tick = () => setMinsLeft(minutesToMidnight());
+    tick();
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const tk = todayKey();
+  const pending = ready && habits.filter((h) => h.lastIncrementDate !== tk);
+  const urgent = minsLeft !== null && minsLeft <= 120 && pending && pending.length > 0;
 
   return (
     <div className="px-5 pt-10">
@@ -45,6 +67,22 @@ function Dashboard() {
           Hola, <span className="gradient-text">sigue así</span>
         </h1>
       </header>
+
+      {urgent && (
+        <Card className="mb-4 border border-red-500/40 bg-red-500/10 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 h-5 w-5 text-red-300" />
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-red-200">
+                Faltan {Math.floor(minsLeft! / 60)}h {minsLeft! % 60}m para medianoche
+              </p>
+              <p className="text-xs text-red-200/80">
+                Registra tu día antes de las 12:00 AM o la racha vuelve a 0.
+              </p>
+            </div>
+          </div>
+        </Card>
+      )}
 
       <Card className="glass mb-6 border-0 p-5">
         <div className="flex items-start gap-3">
@@ -68,20 +106,41 @@ function Dashboard() {
         {ready && habits.length === 0 && (
           <Card className="glass border-0 p-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Aún no tienes hábitos. Crea tu primera meta desde la pestaña "Nueva".
+              Aún no tienes hábitos. Crea tu primera meta desde "Más → Nueva meta".
             </p>
           </Card>
         )}
         {habits.map((h) => (
-          <HabitCard key={h.id} habit={h} onReset={() => resetHabit(h.id)} />
+          <HabitCard
+            key={h.id}
+            habit={h}
+            onReset={() => resetHabit(h.id)}
+            onIncrement={() => {
+              if (h.lastIncrementDate === tk) {
+                toast.info("Ya registraste hoy. Nos vemos mañana 💜");
+                return;
+              }
+              incrementDay(h.id);
+              toast.success("¡+1 día limpio! 🔥");
+            }}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function HabitCard({ habit, onReset }: { habit: Habit; onReset: () => void }) {
-  const days = daysSince(habit.startDate);
+function HabitCard({
+  habit,
+  onReset,
+  onIncrement,
+}: {
+  habit: Habit;
+  onReset: () => void;
+  onIncrement: () => void;
+}) {
+  const days = habit.currentDays;
+  const doneToday = habit.lastIncrementDate === todayKey();
   return (
     <Card className="relative overflow-hidden border-0 p-0">
       <div className="absolute inset-0 gradient-bg opacity-20" />
@@ -101,6 +160,9 @@ function HabitCard({ habit, onReset }: { habit: Habit; onReset: () => void }) {
           <p className="mt-2 text-sm uppercase tracking-[0.25em] text-muted-foreground">
             {days === 1 ? "Día limpio" : "Días limpios"}
           </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Mejor racha: <span className="text-foreground">{habit.bestStreak}</span>
+          </p>
         </div>
 
         {habit.reason && (
@@ -108,6 +170,20 @@ function HabitCard({ habit, onReset }: { habit: Habit; onReset: () => void }) {
             "{habit.reason}"
           </p>
         )}
+
+        <Button
+          onClick={onIncrement}
+          disabled={doneToday}
+          className={cn(
+            "mb-2 h-12 w-full text-base font-semibold",
+            doneToday
+              ? "bg-emerald-500/20 text-emerald-200 hover:bg-emerald-500/20"
+              : "gradient-bg shadow-lg shadow-violet-500/30",
+          )}
+        >
+          <Plus className="mr-2 h-5 w-5" />
+          {doneToday ? "Día registrado ✓" : "Aumentar día"}
+        </Button>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
