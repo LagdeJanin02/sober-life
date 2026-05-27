@@ -4,8 +4,16 @@ export interface Habit {
   id: string;
   name: string;
   type: HabitType;
-  startDate: string; // ISO date
+  startDate: string; // ISO date (when streak started)
   reason: string;
+  /** Días limpios contados manualmente (botón Aumentar día). */
+  currentDays: number;
+  /** YYYY-MM-DD del último incremento manual. null = nunca. */
+  lastIncrementDate: string | null;
+  /** Mejor racha histórica. */
+  bestStreak: number;
+  /** ID de adicción del catálogo (opcional). */
+  addictionId?: string;
 }
 
 export const HABIT_PRESETS: { value: HabitType; label: string; emoji: string }[] = [
@@ -51,29 +59,72 @@ export function daysSince(iso: string): number {
   return Math.max(0, Math.floor((now - start) / (1000 * 60 * 60 * 24)));
 }
 
+export function todayKey(d: Date = new Date()): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+export function diffDaysKey(a: string, b: string): number {
+  const da = new Date(a + "T00:00:00").getTime();
+  const db = new Date(b + "T00:00:00").getTime();
+  return Math.round((da - db) / (1000 * 60 * 60 * 24));
+}
+
+/** Devuelve hábito normalizado: si pasó más de 1 día sin incrementar, racha = 0. */
+export function reconcileHabit(h: Habit): Habit {
+  if (!h.lastIncrementDate) return h;
+  const gap = diffDaysKey(todayKey(), h.lastIncrementDate);
+  if (gap > 1) {
+    return { ...h, currentDays: 0, lastIncrementDate: null, startDate: new Date().toISOString() };
+  }
+  return h;
+}
+
+/** Minutos restantes hasta la próxima medianoche. */
+export function minutesToMidnight(now: Date = new Date()): number {
+  const next = new Date(now);
+  next.setHours(24, 0, 0, 0);
+  return Math.max(0, Math.floor((next.getTime() - now.getTime()) / 60000));
+}
+
 const STORAGE_KEY = "soberlife.habits.v1";
 
 function seed(): Habit[] {
   const now = new Date();
-  const daysAgo = (n: number) => {
+  const isoDaysAgo = (n: number) => {
     const d = new Date(now);
     d.setDate(d.getDate() - n);
     return d.toISOString();
+  };
+  const keyDaysAgo = (n: number) => {
+    const d = new Date(now);
+    d.setDate(d.getDate() - n);
+    return todayKey(d);
   };
   return [
     {
       id: crypto.randomUUID(),
       name: "Sin Fumar",
       type: "fumar",
-      startDate: daysAgo(12),
+      addictionId: "tabaco",
+      startDate: isoDaysAgo(15),
       reason: "Quiero recuperar mi respiración y disfrutar correr de nuevo.",
+      currentDays: 15,
+      lastIncrementDate: keyDaysAgo(0),
+      bestStreak: 15,
     },
     {
       id: crypto.randomUUID(),
       name: "Sin Alcohol",
       type: "alcohol",
-      startDate: daysAgo(5),
+      addictionId: "alcohol",
+      startDate: isoDaysAgo(5),
       reason: "Por mi familia y por dormir tranquilo.",
+      currentDays: 5,
+      lastIncrementDate: keyDaysAgo(0),
+      bestStreak: 9,
     },
   ];
 }

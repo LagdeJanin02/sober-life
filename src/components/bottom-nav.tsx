@@ -1,11 +1,13 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, Trophy, Plus } from "lucide-react";
+import { Home, Trophy, Users, BookOpen, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { to: "/", label: "Inicio", icon: Home },
-  { to: "/logros", label: "Logros", icon: Trophy },
-  { to: "/nueva-meta", label: "Nueva", icon: Plus },
+  { to: "/retos", label: "Retos", icon: Trophy },
+  { to: "/comunidad", label: "Comunidad", icon: Users },
+  { to: "/enciclopedia", label: "Saber", icon: BookOpen },
+  { to: "/mas", label: "Más", icon: MoreHorizontal },
 ] as const;
 
 export function BottomNav() {
