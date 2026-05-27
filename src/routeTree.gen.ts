@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as NuevaMetaRouteImport } from './routes/nueva-meta'
 import { Route as LogrosRouteImport } from './routes/logros'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 
 const WelcomeRoute = WelcomeRouteImport.update({
@@ -29,6 +30,11 @@ const LogrosRoute = LogrosRouteImport.update({
   path: '/logros',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/logros': typeof LogrosRoute
   '/nueva-meta': typeof NuevaMetaRoute
   '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/logros': typeof LogrosRoute
   '/nueva-meta': typeof NuevaMetaRoute
   '/welcome': typeof WelcomeRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/logros': typeof LogrosRoute
   '/nueva-meta': typeof NuevaMetaRoute
   '/welcome': typeof WelcomeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/logros' | '/nueva-meta' | '/welcome'
+  fullPaths: '/' | '/login' | '/logros' | '/nueva-meta' | '/welcome'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/logros' | '/nueva-meta' | '/welcome'
-  id: '__root__' | '/' | '/logros' | '/nueva-meta' | '/welcome'
+  to: '/' | '/login' | '/logros' | '/nueva-meta' | '/welcome'
+  id: '__root__' | '/' | '/login' | '/logros' | '/nueva-meta' | '/welcome'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
   LogrosRoute: typeof LogrosRoute
   NuevaMetaRoute: typeof NuevaMetaRoute
   WelcomeRoute: typeof WelcomeRoute
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LogrosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
   LogrosRoute: LogrosRoute,
   NuevaMetaRoute: NuevaMetaRoute,
   WelcomeRoute: WelcomeRoute,
