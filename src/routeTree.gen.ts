@@ -10,10 +10,15 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as SoporteRouteImport } from './routes/soporte'
+import { Route as RetosRouteImport } from './routes/retos'
 import { Route as NuevaMetaRouteImport } from './routes/nueva-meta'
-import { Route as LogrosRouteImport } from './routes/logros'
+import { Route as MasRouteImport } from './routes/mas'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as EnciclopediaRouteImport } from './routes/enciclopedia'
 import { Route as EligeAdiccionRouteImport } from './routes/elige-adiccion'
+import { Route as ComunidadRouteImport } from './routes/comunidad'
+import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
 
 const WelcomeRoute = WelcomeRouteImport.update({
@@ -21,14 +26,24 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SoporteRoute = SoporteRouteImport.update({
+  id: '/soporte',
+  path: '/soporte',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RetosRoute = RetosRouteImport.update({
+  id: '/retos',
+  path: '/retos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NuevaMetaRoute = NuevaMetaRouteImport.update({
   id: '/nueva-meta',
   path: '/nueva-meta',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LogrosRoute = LogrosRouteImport.update({
-  id: '/logros',
-  path: '/logros',
+const MasRoute = MasRouteImport.update({
+  id: '/mas',
+  path: '/mas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -36,9 +51,24 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnciclopediaRoute = EnciclopediaRouteImport.update({
+  id: '/enciclopedia',
+  path: '/enciclopedia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EligeAdiccionRoute = EligeAdiccionRouteImport.update({
   id: '/elige-adiccion',
   path: '/elige-adiccion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComunidadRoute = ComunidadRouteImport.update({
+  id: '/comunidad',
+  path: '/comunidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendaRoute = AgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -49,62 +79,97 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
+  '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
+  '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
-  '/logros': typeof LogrosRoute
+  '/mas': typeof MasRoute
   '/nueva-meta': typeof NuevaMetaRoute
+  '/retos': typeof RetosRoute
+  '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
+  '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
+  '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
-  '/logros': typeof LogrosRoute
+  '/mas': typeof MasRoute
   '/nueva-meta': typeof NuevaMetaRoute
+  '/retos': typeof RetosRoute
+  '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
+  '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
+  '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
-  '/logros': typeof LogrosRoute
+  '/mas': typeof MasRoute
   '/nueva-meta': typeof NuevaMetaRoute
+  '/retos': typeof RetosRoute
+  '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/agenda'
+    | '/comunidad'
     | '/elige-adiccion'
+    | '/enciclopedia'
     | '/login'
-    | '/logros'
+    | '/mas'
     | '/nueva-meta'
+    | '/retos'
+    | '/soporte'
     | '/welcome'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/agenda'
+    | '/comunidad'
     | '/elige-adiccion'
+    | '/enciclopedia'
     | '/login'
-    | '/logros'
+    | '/mas'
     | '/nueva-meta'
+    | '/retos'
+    | '/soporte'
     | '/welcome'
   id:
     | '__root__'
     | '/'
+    | '/agenda'
+    | '/comunidad'
     | '/elige-adiccion'
+    | '/enciclopedia'
     | '/login'
-    | '/logros'
+    | '/mas'
     | '/nueva-meta'
+    | '/retos'
+    | '/soporte'
     | '/welcome'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgendaRoute: typeof AgendaRoute
+  ComunidadRoute: typeof ComunidadRoute
   EligeAdiccionRoute: typeof EligeAdiccionRoute
+  EnciclopediaRoute: typeof EnciclopediaRoute
   LoginRoute: typeof LoginRoute
-  LogrosRoute: typeof LogrosRoute
+  MasRoute: typeof MasRoute
   NuevaMetaRoute: typeof NuevaMetaRoute
+  RetosRoute: typeof RetosRoute
+  SoporteRoute: typeof SoporteRoute
   WelcomeRoute: typeof WelcomeRoute
 }
 
@@ -117,6 +182,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/soporte': {
+      id: '/soporte'
+      path: '/soporte'
+      fullPath: '/soporte'
+      preLoaderRoute: typeof SoporteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/retos': {
+      id: '/retos'
+      path: '/retos'
+      fullPath: '/retos'
+      preLoaderRoute: typeof RetosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/nueva-meta': {
       id: '/nueva-meta'
       path: '/nueva-meta'
@@ -124,11 +203,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NuevaMetaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/logros': {
-      id: '/logros'
-      path: '/logros'
-      fullPath: '/logros'
-      preLoaderRoute: typeof LogrosRouteImport
+    '/mas': {
+      id: '/mas'
+      path: '/mas'
+      fullPath: '/mas'
+      preLoaderRoute: typeof MasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -138,11 +217,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/enciclopedia': {
+      id: '/enciclopedia'
+      path: '/enciclopedia'
+      fullPath: '/enciclopedia'
+      preLoaderRoute: typeof EnciclopediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/elige-adiccion': {
       id: '/elige-adiccion'
       path: '/elige-adiccion'
       fullPath: '/elige-adiccion'
       preLoaderRoute: typeof EligeAdiccionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comunidad': {
+      id: '/comunidad'
+      path: '/comunidad'
+      fullPath: '/comunidad'
+      preLoaderRoute: typeof ComunidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agenda': {
+      id: '/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AgendaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -157,12 +257,27 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgendaRoute: AgendaRoute,
+  ComunidadRoute: ComunidadRoute,
   EligeAdiccionRoute: EligeAdiccionRoute,
+  EnciclopediaRoute: EnciclopediaRoute,
   LoginRoute: LoginRoute,
-  LogrosRoute: LogrosRoute,
+  MasRoute: MasRoute,
   NuevaMetaRoute: NuevaMetaRoute,
+  RetosRoute: RetosRoute,
+  SoporteRoute: SoporteRoute,
   WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
