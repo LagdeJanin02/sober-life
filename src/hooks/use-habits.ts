@@ -1,12 +1,21 @@
 import * as React from "react";
-import { loadHabits, saveHabits, type Habit } from "@/lib/soberlife";
+import {
+  loadHabits,
+  saveHabits,
+  reconcileHabit,
+  todayKey,
+  diffDaysKey,
+  type Habit,
+} from "@/lib/soberlife";
 
 export function useHabits() {
   const [habits, setHabits] = React.useState<Habit[]>([]);
   const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
-    setHabits(loadHabits());
+    const reconciled = loadHabits().map(reconcileHabit);
+    setHabits(reconciled);
+    saveHabits(reconciled);
     setReady(true);
   }, []);
 
@@ -26,8 +35,35 @@ export function useHabits() {
   const resetHabit = React.useCallback(
     (id: string) => {
       const next = habits.map((h) =>
-        h.id === id ? { ...h, startDate: new Date().toISOString() } : h,
+        h.id === id
+          ? {
+              ...h,
+              startDate: new Date().toISOString(),
+              currentDays: 0,
+              lastIncrementDate: null,
+            }
+          : h,
       );
+      update(next);
+    },
+    [habits, update],
+  );
+
+  const incrementDay = React.useCallback(
+    (id: string) => {
+      const tk = todayKey();
+      const next = habits.map((h) => {
+        if (h.id !== id) return h;
+        if (h.lastIncrementDate === tk) return h; // already today
+        const gap = h.lastIncrementDate ? diffDaysKey(tk, h.lastIncrementDate) : 1;
+        const newDays = gap === 1 ? h.currentDays + 1 : 1;
+        return {
+          ...h,
+          currentDays: newDays,
+          lastIncrementDate: tk,
+          bestStreak: Math.max(h.bestStreak, newDays),
+        };
+      });
       update(next);
     },
     [habits, update],
@@ -40,5 +76,5 @@ export function useHabits() {
     [habits, update],
   );
 
-  return { habits, ready, addHabit, resetHabit, removeHabit };
+  return { habits, ready, addHabit, resetHabit, removeHabit, incrementDay };
 }
