@@ -4,11 +4,8 @@ export type AddictionCategory =
   | "alimentarias"
   | "digitales"
   | "emocionales";
-  | "sustancias"
-  | "conductuales"
-  | "alimentarias"
-  | "digitales"
-  | "emocionales";
+
+import { OVERRIDES } from "./addiction-overrides";
 
 export interface Addiction {
   id: string;
