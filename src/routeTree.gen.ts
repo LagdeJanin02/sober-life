@@ -18,6 +18,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as EnciclopediaRouteImport } from './routes/enciclopedia'
 import { Route as EligeAdiccionRouteImport } from './routes/elige-adiccion'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
+import { Route as AmigosRouteImport } from './routes/amigos'
 import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -66,6 +67,11 @@ const ComunidadRoute = ComunidadRouteImport.update({
   path: '/comunidad',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AmigosRoute = AmigosRouteImport.update({
+  id: '/amigos',
+  path: '/amigos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AgendaRoute = AgendaRouteImport.update({
   id: '/agenda',
   path: '/agenda',
@@ -80,6 +86,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
+  '/amigos': typeof AmigosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
+  '/amigos': typeof AmigosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
+  '/amigos': typeof AmigosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/agenda'
+    | '/amigos'
     | '/comunidad'
     | '/elige-adiccion'
     | '/enciclopedia'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/agenda'
+    | '/amigos'
     | '/comunidad'
     | '/elige-adiccion'
     | '/enciclopedia'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/agenda'
+    | '/amigos'
     | '/comunidad'
     | '/elige-adiccion'
     | '/enciclopedia'
@@ -162,6 +174,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AgendaRoute: typeof AgendaRoute
+  AmigosRoute: typeof AmigosRoute
   ComunidadRoute: typeof ComunidadRoute
   EligeAdiccionRoute: typeof EligeAdiccionRoute
   EnciclopediaRoute: typeof EnciclopediaRoute
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComunidadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/amigos': {
+      id: '/amigos'
+      path: '/amigos'
+      fullPath: '/amigos'
+      preLoaderRoute: typeof AmigosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/agenda': {
       id: '/agenda'
       path: '/agenda'
@@ -258,6 +278,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgendaRoute: AgendaRoute,
+  AmigosRoute: AmigosRoute,
   ComunidadRoute: ComunidadRoute,
   EligeAdiccionRoute: EligeAdiccionRoute,
   EnciclopediaRoute: EnciclopediaRoute,
@@ -271,3 +292,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
