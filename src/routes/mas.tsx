@@ -6,8 +6,12 @@ import {
   LogIn,
   Sparkles,
   ChevronRight,
+  Settings,
+  MapPin,
+  Users,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { BackButton } from "@/components/back-button";
 
 export const Route = createFileRoute("/mas")({
   component: Mas,
@@ -15,7 +19,10 @@ export const Route = createFileRoute("/mas")({
 
 const links = [
   { to: "/nueva-meta", label: "Nueva meta", desc: "Añade un hábito a monitorear", icon: Plus },
+  { to: "/amigos", label: "Amigos y chat", desc: "Red privada y solicitudes", icon: Users },
+  { to: "/centros", label: "Centros locales RD", desc: "Mapa con metro y OMSA", icon: MapPin },
   { to: "/agenda", label: "Agenda médica", desc: "Psicólogos y psiquiatras", icon: Stethoscope },
+  { to: "/configuracion", label: "Configuración", desc: "Perfil, tema y accesibilidad", icon: Settings },
   {
     to: "/soporte",
     label: "Soporte y contacto",
@@ -34,6 +41,7 @@ const links = [
 function Mas() {
   return (
     <div className="px-5 pt-10 pb-4">
+      <BackButton to="/" />
       <header className="mb-6">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Más opciones</p>
         <h1 className="mt-1 text-3xl font-semibold">
