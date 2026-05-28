@@ -4,13 +4,17 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
+  useNavigate,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import * as React from "react";
 
 import appCss from "../styles.css?url";
 import { BottomNav } from "@/components/bottom-nav";
 import { Toaster } from "@/components/ui/sonner";
+import { loadSession, PUBLIC_ROUTES } from "@/lib/auth";
 
 function NotFoundComponent() {
   return (
@@ -115,11 +119,43 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="mx-auto min-h-screen max-w-md pb-28">
-        <Outlet />
-      </div>
-      <BottomNav />
+      <AuthGate />
       <Toaster theme="dark" position="top-center" />
     </QueryClientProvider>
+  );
+}
+
+function AuthGate() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+  const [authed, setAuthed] = React.useState<boolean | null>(null);
+
+  React.useEffect(() => {
+    setAuthed(!!loadSession());
+  }, [pathname]);
+
+  React.useEffect(() => {
+    if (authed === false && !PUBLIC_ROUTES.has(pathname)) {
+      navigate({ to: "/welcome" });
+    }
+  }, [authed, pathname, navigate]);
+
+  if (authed === null) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-pulse rounded-full gradient-bg" />
+      </div>
+    );
+  }
+
+  const showNav = authed && !PUBLIC_ROUTES.has(pathname);
+
+  return (
+    <>
+      <main className="mx-auto min-h-screen max-w-md pb-28">
+        <Outlet />
+      </main>
+      {showNav && <BottomNav />}
+    </>
   );
 }

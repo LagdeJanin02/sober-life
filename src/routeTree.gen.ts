@@ -17,9 +17,14 @@ import { Route as MasRouteImport } from './routes/mas'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as EnciclopediaRouteImport } from './routes/enciclopedia'
 import { Route as EligeAdiccionRouteImport } from './routes/elige-adiccion'
+import { Route as ConfiguracionRouteImport } from './routes/configuracion'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
+import { Route as CentrosRouteImport } from './routes/centros'
+import { Route as CasiCaigoRouteImport } from './routes/casi-caigo'
+import { Route as AmigosRouteImport } from './routes/amigos'
 import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChatIdRouteImport } from './routes/chat.$id'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -61,9 +66,29 @@ const EligeAdiccionRoute = EligeAdiccionRouteImport.update({
   path: '/elige-adiccion',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfiguracionRoute = ConfiguracionRouteImport.update({
+  id: '/configuracion',
+  path: '/configuracion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ComunidadRoute = ComunidadRouteImport.update({
   id: '/comunidad',
   path: '/comunidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CentrosRoute = CentrosRouteImport.update({
+  id: '/centros',
+  path: '/centros',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CasiCaigoRoute = CasiCaigoRouteImport.update({
+  id: '/casi-caigo',
+  path: '/casi-caigo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AmigosRoute = AmigosRouteImport.update({
+  id: '/amigos',
+  path: '/amigos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AgendaRoute = AgendaRouteImport.update({
@@ -76,11 +101,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChatIdRoute = ChatIdRouteImport.update({
+  id: '/chat/$id',
+  path: '/chat/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
+  '/amigos': typeof AmigosRoute
+  '/casi-caigo': typeof CasiCaigoRoute
+  '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
+  '/configuracion': typeof ConfiguracionRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
@@ -89,11 +123,16 @@ export interface FileRoutesByFullPath {
   '/retos': typeof RetosRoute
   '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
+  '/chat/$id': typeof ChatIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
+  '/amigos': typeof AmigosRoute
+  '/casi-caigo': typeof CasiCaigoRoute
+  '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
+  '/configuracion': typeof ConfiguracionRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
@@ -102,12 +141,17 @@ export interface FileRoutesByTo {
   '/retos': typeof RetosRoute
   '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
+  '/chat/$id': typeof ChatIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
+  '/amigos': typeof AmigosRoute
+  '/casi-caigo': typeof CasiCaigoRoute
+  '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
+  '/configuracion': typeof ConfiguracionRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
@@ -116,13 +160,18 @@ export interface FileRoutesById {
   '/retos': typeof RetosRoute
   '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
+  '/chat/$id': typeof ChatIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/agenda'
+    | '/amigos'
+    | '/casi-caigo'
+    | '/centros'
     | '/comunidad'
+    | '/configuracion'
     | '/elige-adiccion'
     | '/enciclopedia'
     | '/login'
@@ -131,11 +180,16 @@ export interface FileRouteTypes {
     | '/retos'
     | '/soporte'
     | '/welcome'
+    | '/chat/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/agenda'
+    | '/amigos'
+    | '/casi-caigo'
+    | '/centros'
     | '/comunidad'
+    | '/configuracion'
     | '/elige-adiccion'
     | '/enciclopedia'
     | '/login'
@@ -144,11 +198,16 @@ export interface FileRouteTypes {
     | '/retos'
     | '/soporte'
     | '/welcome'
+    | '/chat/$id'
   id:
     | '__root__'
     | '/'
     | '/agenda'
+    | '/amigos'
+    | '/casi-caigo'
+    | '/centros'
     | '/comunidad'
+    | '/configuracion'
     | '/elige-adiccion'
     | '/enciclopedia'
     | '/login'
@@ -157,12 +216,17 @@ export interface FileRouteTypes {
     | '/retos'
     | '/soporte'
     | '/welcome'
+    | '/chat/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AgendaRoute: typeof AgendaRoute
+  AmigosRoute: typeof AmigosRoute
+  CasiCaigoRoute: typeof CasiCaigoRoute
+  CentrosRoute: typeof CentrosRoute
   ComunidadRoute: typeof ComunidadRoute
+  ConfiguracionRoute: typeof ConfiguracionRoute
   EligeAdiccionRoute: typeof EligeAdiccionRoute
   EnciclopediaRoute: typeof EnciclopediaRoute
   LoginRoute: typeof LoginRoute
@@ -171,6 +235,7 @@ export interface RootRouteChildren {
   RetosRoute: typeof RetosRoute
   SoporteRoute: typeof SoporteRoute
   WelcomeRoute: typeof WelcomeRoute
+  ChatIdRoute: typeof ChatIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -231,11 +296,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EligeAdiccionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/configuracion': {
+      id: '/configuracion'
+      path: '/configuracion'
+      fullPath: '/configuracion'
+      preLoaderRoute: typeof ConfiguracionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/comunidad': {
       id: '/comunidad'
       path: '/comunidad'
       fullPath: '/comunidad'
       preLoaderRoute: typeof ComunidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/centros': {
+      id: '/centros'
+      path: '/centros'
+      fullPath: '/centros'
+      preLoaderRoute: typeof CentrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/casi-caigo': {
+      id: '/casi-caigo'
+      path: '/casi-caigo'
+      fullPath: '/casi-caigo'
+      preLoaderRoute: typeof CasiCaigoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/amigos': {
+      id: '/amigos'
+      path: '/amigos'
+      fullPath: '/amigos'
+      preLoaderRoute: typeof AmigosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agenda': {
@@ -252,13 +345,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chat/$id': {
+      id: '/chat/$id'
+      path: '/chat/$id'
+      fullPath: '/chat/$id'
+      preLoaderRoute: typeof ChatIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgendaRoute: AgendaRoute,
+  AmigosRoute: AmigosRoute,
+  CasiCaigoRoute: CasiCaigoRoute,
+  CentrosRoute: CentrosRoute,
   ComunidadRoute: ComunidadRoute,
+  ConfiguracionRoute: ConfiguracionRoute,
   EligeAdiccionRoute: EligeAdiccionRoute,
   EnciclopediaRoute: EnciclopediaRoute,
   LoginRoute: LoginRoute,
@@ -267,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   RetosRoute: RetosRoute,
   SoporteRoute: SoporteRoute,
   WelcomeRoute: WelcomeRoute,
+  ChatIdRoute: ChatIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

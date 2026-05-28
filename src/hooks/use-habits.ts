@@ -11,6 +11,9 @@ import {
 export function useHabits() {
   const [habits, setHabits] = React.useState<Habit[]>([]);
   const [ready, setReady] = React.useState(false);
+  const [removalLog, setRemovalLog] = React.useState<
+    { id: string; name: string; reason: string; date: string }[]
+  >([]);
 
   React.useEffect(() => {
     const reconciled = loadHabits().map(reconcileHabit);
@@ -70,11 +73,18 @@ export function useHabits() {
   );
 
   const removeHabit = React.useCallback(
-    (id: string) => {
+    (id: string, reason: string = "Sin motivo") => {
+      const h = habits.find((x) => x.id === id);
+      if (h) {
+        setRemovalLog((p) => [
+          ...p,
+          { id, name: h.name, reason, date: new Date().toISOString() },
+        ]);
+      }
       update(habits.filter((h) => h.id !== id));
     },
     [habits, update],
   );
 
-  return { habits, ready, addHabit, resetHabit, removeHabit, incrementDay };
+  return { habits, ready, addHabit, resetHabit, removeHabit, incrementDay, removalLog };
 }

@@ -15,6 +15,7 @@ export interface Professional {
   rating: number;
   fee: string;
   avatar: string; // emoji
+  treats: string[]; // addiction ids
 }
 
 const inDays = (n: number, h = 19) => {
@@ -67,32 +68,40 @@ export const COMMUNITY_EVENTS: CommunityEvent[] = [
   },
 ];
 
-export const PROFESSIONALS: Professional[] = [
-  {
-    id: "p1",
-    name: "Dra. Lucía Mendoza",
-    specialty: "Psiquiatra — Adicciones a sustancias",
-    bio: "15 años acompañando procesos de desintoxicación con enfoque integrativo.",
-    rating: 4.9,
-    fee: "USD 60 / sesión",
-    avatar: "👩‍⚕️",
-  },
-  {
-    id: "p2",
-    name: "Lic. Andrés Rivera",
-    specialty: "Psicólogo clínico — Conductas compulsivas",
-    bio: "Especialista en TCC para apuestas, videojuegos y compras compulsivas.",
-    rating: 4.8,
-    fee: "USD 45 / sesión",
-    avatar: "👨‍⚕️",
-  },
-  {
-    id: "p3",
-    name: "Dra. Camila Soto",
-    specialty: "Psicóloga — Conductas digitales y ansiedad",
-    bio: "Trabaja con jóvenes y adultos en uso problemático de redes y pantallas.",
-    rating: 5.0,
-    fee: "USD 50 / sesión",
-    avatar: "🧑‍⚕️",
-  },
+const AV = ["👩‍⚕️", "👨‍⚕️", "🧑‍⚕️"];
+const FN = ["Lucía", "Andrés", "Camila", "Roberto", "María", "Jorge", "Patricia", "Diego", "Elena", "Carlos", "Sofía", "Luis", "Ana", "Pedro", "Beatriz", "Manuel", "Daniela", "Rafael", "Isabel", "José"];
+const LN = ["Mendoza", "Rivera", "Soto", "Pérez", "Gómez", "Martínez", "Jiménez", "Castro", "Vargas", "Reyes", "Núñez", "Santana", "Peña", "Cruz", "Méndez", "Báez", "Polanco", "Rosario", "Encarnación", "Almonte"];
+const SPECS = [
+  { title: "Psiquiatra — Adicciones a sustancias", treats: ["alcohol", "cocaina", "heroina", "tabaco", "vapeo"] },
+  { title: "Psicólogo/a clínico/a — Conductas compulsivas", treats: ["apuestas", "videojuegos", "compras", "trabajo", "sexo"] },
+  { title: "Psicólogo/a — Adicciones digitales", treats: ["redes", "tiktok", "pornografia", "videojuegos", "celular"] },
+  { title: "Psiquiatra — Trastornos duales", treats: ["alcohol", "cannabis", "benzodiacepinas", "opioides_rx"] },
+  { title: "Psicólogo/a — Conductas alimentarias", treats: ["azucar", "comida", "bulimia", "anorexia", "ortorexia"] },
+  { title: "Psicólogo/a familiar — Codependencia", treats: ["relaciones", "celos", "aprobacion", "drama"] },
 ];
+const BIOS = [
+  "Más de 10 años acompañando procesos de recuperación con enfoque integrativo.",
+  "Especialista en terapia cognitivo-conductual (TCC) basada en evidencia.",
+  "Trabajo con jóvenes y adultos. Modalidad presencial y telemedicina.",
+  "Enfoque humanista, sin juicios. Adapto el tratamiento a tu ritmo.",
+  "Formación internacional en mindfulness aplicado a adicciones.",
+  "Experto/a en prevención de recaídas y manejo del craving.",
+];
+
+export const PROFESSIONALS: Professional[] = Array.from({ length: 50 }, (_, i) => {
+  const spec = SPECS[i % SPECS.length];
+  const fn = FN[i % FN.length];
+  const ln = LN[(i * 3) % LN.length];
+  const title = i % 4 === 0 ? "Dr." : i % 4 === 1 ? "Dra." : i % 4 === 2 ? "Lic." : "Lic.";
+  const fee = 30 + (i % 7) * 10;
+  return {
+    id: `p${i + 1}`,
+    name: `${title} ${fn} ${ln}`,
+    specialty: spec.title,
+    bio: BIOS[i % BIOS.length],
+    rating: Math.round((4.3 + (i % 7) * 0.1) * 10) / 10,
+    fee: `USD ${fee} / RD$ ${fee * 60} por sesión`,
+    avatar: AV[i % AV.length],
+    treats: spec.treats.slice(0, 1 + (i % 5)),
+  };
+});

@@ -5,6 +5,8 @@ export type AddictionCategory =
   | "digitales"
   | "emocionales";
 
+import { OVERRIDES } from "./addiction-overrides";
+
 export interface Addiction {
   id: string;
   name: string;
@@ -178,5 +180,8 @@ export const CATEGORY_LABELS: Record<AddictionCategory, string> = {
 };
 
 export function getAddiction(id: string): Addiction | undefined {
-  return ADDICTIONS.find((a) => a.id === id);
+  const base = ADDICTIONS.find((a) => a.id === id);
+  if (!base) return undefined;
+  const o = OVERRIDES[id];
+  return o ? { ...base, ...o } : base;
 }
