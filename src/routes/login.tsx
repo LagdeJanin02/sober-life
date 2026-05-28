@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { createSession } from "@/lib/auth";
+import { BackButton } from "@/components/back-button";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -14,14 +16,21 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const handle = (label: string) => (e: React.FormEvent) => {
+  const [email, setEmail] = React.useState("");
+  const [name, setName] = React.useState("");
+  const handle = (label: string, isRegister: boolean) => (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success(`${label} simulado — sincronización activa`);
-    navigate({ to: "/elige-adiccion" });
+    const data = new FormData(e.target as HTMLFormElement);
+    const em = (data.get("email") as string) || email || "tu@correo.com";
+    const nm = isRegister ? ((data.get("name") as string) || name || "Tú") : em.split("@")[0];
+    createSession(em, nm);
+    toast.success(`${label} — sincronización activa 📡`);
+    navigate({ to: isRegister ? "/elige-adiccion" : "/" });
   };
 
   return (
     <div className="px-5 pt-12">
+      <BackButton to="/welcome" />
       <header className="mb-6">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tu cuenta</p>
         <h1 className="mt-1 text-3xl font-semibold">
@@ -47,9 +56,9 @@ function LoginPage() {
           </TabsList>
 
           <TabsContent value="login" className="mt-5 space-y-4">
-            <form onSubmit={handle("Login")} className="space-y-4">
-              <Field icon={Mail} label="Correo" type="email" placeholder="tu@correo.com" />
-              <Field icon={Lock} label="Contraseña" type="password" placeholder="••••••••" />
+            <form onSubmit={handle("Sesión iniciada", false)} className="space-y-4">
+              <Field icon={Mail} name="email" label="Correo" type="email" placeholder="tu@correo.com" />
+              <Field icon={Lock} name="password" label="Contraseña" type="password" placeholder="••••••••" />
               <Button type="submit" className="h-12 w-full gradient-bg text-base font-semibold">
                 Entrar
               </Button>
@@ -57,10 +66,10 @@ function LoginPage() {
           </TabsContent>
 
           <TabsContent value="register" className="mt-5 space-y-4">
-            <form onSubmit={handle("Registro")} className="space-y-4">
-              <Field icon={User} label="Nombre" placeholder="Tu nombre" />
-              <Field icon={Mail} label="Correo" type="email" placeholder="tu@correo.com" />
-              <Field icon={Lock} label="Contraseña" type="password" placeholder="Mínimo 8 caracteres" />
+            <form onSubmit={handle("Cuenta creada", true)} className="space-y-4">
+              <Field icon={User} name="name" label="Nombre" placeholder="Tu nombre" />
+              <Field icon={Mail} name="email" label="Correo" type="email" placeholder="tu@correo.com" />
+              <Field icon={Lock} name="password" label="Contraseña" type="password" placeholder="Mínimo 8 caracteres" />
               <Button type="submit" className="h-12 w-full gradient-bg text-base font-semibold">
                 Crear cuenta y elegir adicción
               </Button>
@@ -70,9 +79,7 @@ function LoginPage() {
       </Card>
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
-        <Link to="/" className="underline">
-          Continuar sin cuenta
-        </Link>
+        <Link to="/welcome" className="underline">Volver al tutorial</Link>
       </p>
     </div>
   );
