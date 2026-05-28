@@ -18,6 +18,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as EnciclopediaRouteImport } from './routes/enciclopedia'
 import { Route as EligeAdiccionRouteImport } from './routes/elige-adiccion'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
+import { Route as CentrosRouteImport } from './routes/centros'
 import { Route as AmigosRouteImport } from './routes/amigos'
 import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
@@ -68,6 +69,11 @@ const ComunidadRoute = ComunidadRouteImport.update({
   path: '/comunidad',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CentrosRoute = CentrosRouteImport.update({
+  id: '/centros',
+  path: '/centros',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AmigosRoute = AmigosRouteImport.update({
   id: '/amigos',
   path: '/amigos',
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
   '/amigos': typeof AmigosRoute
+  '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
   '/amigos': typeof AmigosRoute
+  '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
   '/amigos': typeof AmigosRoute
+  '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agenda'
     | '/amigos'
+    | '/centros'
     | '/comunidad'
     | '/elige-adiccion'
     | '/enciclopedia'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agenda'
     | '/amigos'
+    | '/centros'
     | '/comunidad'
     | '/elige-adiccion'
     | '/enciclopedia'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agenda'
     | '/amigos'
+    | '/centros'
     | '/comunidad'
     | '/elige-adiccion'
     | '/enciclopedia'
@@ -187,6 +199,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AgendaRoute: typeof AgendaRoute
   AmigosRoute: typeof AmigosRoute
+  CentrosRoute: typeof CentrosRoute
   ComunidadRoute: typeof ComunidadRoute
   EligeAdiccionRoute: typeof EligeAdiccionRoute
   EnciclopediaRoute: typeof EnciclopediaRoute
@@ -264,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComunidadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/centros': {
+      id: '/centros'
+      path: '/centros'
+      fullPath: '/centros'
+      preLoaderRoute: typeof CentrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/amigos': {
       id: '/amigos'
       path: '/amigos'
@@ -299,6 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgendaRoute: AgendaRoute,
   AmigosRoute: AmigosRoute,
+  CentrosRoute: CentrosRoute,
   ComunidadRoute: ComunidadRoute,
   EligeAdiccionRoute: EligeAdiccionRoute,
   EnciclopediaRoute: EnciclopediaRoute,
