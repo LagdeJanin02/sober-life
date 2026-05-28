@@ -4,6 +4,11 @@ export type AddictionCategory =
   | "alimentarias"
   | "digitales"
   | "emocionales";
+  | "sustancias"
+  | "conductuales"
+  | "alimentarias"
+  | "digitales"
+  | "emocionales";
 
 export interface Addiction {
   id: string;
