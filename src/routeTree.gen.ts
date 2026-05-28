@@ -17,6 +17,7 @@ import { Route as MasRouteImport } from './routes/mas'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as EnciclopediaRouteImport } from './routes/enciclopedia'
 import { Route as EligeAdiccionRouteImport } from './routes/elige-adiccion'
+import { Route as ConfiguracionRouteImport } from './routes/configuracion'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
 import { Route as CentrosRouteImport } from './routes/centros'
 import { Route as CasiCaigoRouteImport } from './routes/casi-caigo'
@@ -65,6 +66,11 @@ const EligeAdiccionRoute = EligeAdiccionRouteImport.update({
   path: '/elige-adiccion',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfiguracionRoute = ConfiguracionRouteImport.update({
+  id: '/configuracion',
+  path: '/configuracion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ComunidadRoute = ComunidadRouteImport.update({
   id: '/comunidad',
   path: '/comunidad',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/casi-caigo': typeof CasiCaigoRoute
   '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
+  '/configuracion': typeof ConfiguracionRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/casi-caigo': typeof CasiCaigoRoute
   '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
+  '/configuracion': typeof ConfiguracionRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/casi-caigo': typeof CasiCaigoRoute
   '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
+  '/configuracion': typeof ConfiguracionRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
   '/enciclopedia': typeof EnciclopediaRoute
   '/login': typeof LoginRoute
@@ -162,6 +171,7 @@ export interface FileRouteTypes {
     | '/casi-caigo'
     | '/centros'
     | '/comunidad'
+    | '/configuracion'
     | '/elige-adiccion'
     | '/enciclopedia'
     | '/login'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/casi-caigo'
     | '/centros'
     | '/comunidad'
+    | '/configuracion'
     | '/elige-adiccion'
     | '/enciclopedia'
     | '/login'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/casi-caigo'
     | '/centros'
     | '/comunidad'
+    | '/configuracion'
     | '/elige-adiccion'
     | '/enciclopedia'
     | '/login'
@@ -214,6 +226,7 @@ export interface RootRouteChildren {
   CasiCaigoRoute: typeof CasiCaigoRoute
   CentrosRoute: typeof CentrosRoute
   ComunidadRoute: typeof ComunidadRoute
+  ConfiguracionRoute: typeof ConfiguracionRoute
   EligeAdiccionRoute: typeof EligeAdiccionRoute
   EnciclopediaRoute: typeof EnciclopediaRoute
   LoginRoute: typeof LoginRoute
@@ -283,6 +296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EligeAdiccionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/configuracion': {
+      id: '/configuracion'
+      path: '/configuracion'
+      fullPath: '/configuracion'
+      preLoaderRoute: typeof ConfiguracionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/comunidad': {
       id: '/comunidad'
       path: '/comunidad'
@@ -342,6 +362,7 @@ const rootRouteChildren: RootRouteChildren = {
   CasiCaigoRoute: CasiCaigoRoute,
   CentrosRoute: CentrosRoute,
   ComunidadRoute: ComunidadRoute,
+  ConfiguracionRoute: ConfiguracionRoute,
   EligeAdiccionRoute: EligeAdiccionRoute,
   EnciclopediaRoute: EnciclopediaRoute,
   LoginRoute: LoginRoute,
