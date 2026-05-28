@@ -180,8 +180,6 @@ export const CATEGORY_LABELS: Record<AddictionCategory, string> = {
 export function getAddiction(id: string): Addiction | undefined {
   const base = ADDICTIONS.find((a) => a.id === id);
   if (!base) return undefined;
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { OVERRIDES } = require("./addiction-overrides") as typeof import("./addiction-overrides");
   const o = OVERRIDES[id];
   return o ? { ...base, ...o } : base;
 }
