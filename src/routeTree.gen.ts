@@ -19,6 +19,7 @@ import { Route as EnciclopediaRouteImport } from './routes/enciclopedia'
 import { Route as EligeAdiccionRouteImport } from './routes/elige-adiccion'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
 import { Route as CentrosRouteImport } from './routes/centros'
+import { Route as CasiCaigoRouteImport } from './routes/casi-caigo'
 import { Route as AmigosRouteImport } from './routes/amigos'
 import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
@@ -74,6 +75,11 @@ const CentrosRoute = CentrosRouteImport.update({
   path: '/centros',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CasiCaigoRoute = CasiCaigoRouteImport.update({
+  id: '/casi-caigo',
+  path: '/casi-caigo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AmigosRoute = AmigosRouteImport.update({
   id: '/amigos',
   path: '/amigos',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
   '/amigos': typeof AmigosRoute
+  '/casi-caigo': typeof CasiCaigoRoute
   '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
   '/amigos': typeof AmigosRoute
+  '/casi-caigo': typeof CasiCaigoRoute
   '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
   '/amigos': typeof AmigosRoute
+  '/casi-caigo': typeof CasiCaigoRoute
   '/centros': typeof CentrosRoute
   '/comunidad': typeof ComunidadRoute
   '/elige-adiccion': typeof EligeAdiccionRoute
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agenda'
     | '/amigos'
+    | '/casi-caigo'
     | '/centros'
     | '/comunidad'
     | '/elige-adiccion'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agenda'
     | '/amigos'
+    | '/casi-caigo'
     | '/centros'
     | '/comunidad'
     | '/elige-adiccion'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agenda'
     | '/amigos'
+    | '/casi-caigo'
     | '/centros'
     | '/comunidad'
     | '/elige-adiccion'
@@ -199,6 +211,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AgendaRoute: typeof AgendaRoute
   AmigosRoute: typeof AmigosRoute
+  CasiCaigoRoute: typeof CasiCaigoRoute
   CentrosRoute: typeof CentrosRoute
   ComunidadRoute: typeof ComunidadRoute
   EligeAdiccionRoute: typeof EligeAdiccionRoute
@@ -284,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CentrosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/casi-caigo': {
+      id: '/casi-caigo'
+      path: '/casi-caigo'
+      fullPath: '/casi-caigo'
+      preLoaderRoute: typeof CasiCaigoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/amigos': {
       id: '/amigos'
       path: '/amigos'
@@ -319,6 +339,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgendaRoute: AgendaRoute,
   AmigosRoute: AmigosRoute,
+  CasiCaigoRoute: CasiCaigoRoute,
   CentrosRoute: CentrosRoute,
   ComunidadRoute: ComunidadRoute,
   EligeAdiccionRoute: EligeAdiccionRoute,
