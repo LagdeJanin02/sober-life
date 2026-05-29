@@ -16,10 +16,15 @@ export function useHabits() {
   >([]);
 
   React.useEffect(() => {
-    const reconciled = loadHabits().map(reconcileHabit);
-    setHabits(reconciled);
-    saveHabits(reconciled);
+    const refresh = () => {
+      const reconciled = loadHabits().map(reconcileHabit);
+      setHabits(reconciled);
+      saveHabits(reconciled);
+    };
+    refresh();
     setReady(true);
+    window.addEventListener("soberlife:profile-change", refresh);
+    return () => window.removeEventListener("soberlife:profile-change", refresh);
   }, []);
 
   const update = React.useCallback((next: Habit[]) => {

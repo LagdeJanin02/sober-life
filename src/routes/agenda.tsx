@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Star, Stethoscope } from "lucide-react";
-import { toast } from "sonner";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Star, Stethoscope, CalendarPlus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PROFESSIONALS } from "@/lib/community";
+import { BackButton } from "@/components/back-button";
 
 export const Route = createFileRoute("/agenda")({
   component: Agenda,
@@ -11,7 +11,8 @@ export const Route = createFileRoute("/agenda")({
 
 function Agenda() {
   return (
-    <div className="px-5 pt-10 pb-4">
+    <div className="px-5 pt-12 pb-4">
+      <BackButton to="/mas" />
       <header className="mb-6">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Agenda médica</p>
         <h1 className="mt-1 text-3xl font-semibold">
@@ -45,11 +46,10 @@ function Agenda() {
                 </div>
               </div>
             </div>
-            <Button
-              onClick={() => toast.success(`Solicitud enviada a ${p.name}`)}
-              className="mt-4 h-10 w-full gradient-bg text-sm font-semibold"
-            >
-              Agendar cita
+            <Button asChild className="mt-4 h-10 w-full gradient-bg text-sm font-semibold">
+              <Link to="/medico/$id/agendar" params={{ id: p.id }}>
+                <CalendarPlus className="mr-2 h-4 w-4" /> Agendar cita
+              </Link>
             </Button>
           </Card>
         ))}

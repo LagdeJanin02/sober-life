@@ -132,8 +132,13 @@ function Dashboard() {
         {ready && habits.length === 0 && (
           <Card className="glass border-0 p-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Aún no tienes hábitos. Crea tu primera meta desde "Más → Nueva meta".
+              Aún no tienes una adicción registrada. Empieza eligiendo la primera.
             </p>
+            <Button asChild className="mt-4 h-11 w-full gradient-bg">
+              <Link to="/elige-adiccion">
+                <Plus className="mr-2 h-4 w-4" /> Elegir mi adicción
+              </Link>
+            </Button>
           </Card>
         )}
         {habits.map((h) => (

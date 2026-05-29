@@ -25,6 +25,7 @@ import { Route as AmigosRouteImport } from './routes/amigos'
 import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatIdRouteImport } from './routes/chat.$id'
+import { Route as MedicoIdAgendarRouteImport } from './routes/medico.$id.agendar'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -106,6 +107,11 @@ const ChatIdRoute = ChatIdRouteImport.update({
   path: '/chat/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MedicoIdAgendarRoute = MedicoIdAgendarRouteImport.update({
+  id: '/medico/$id/agendar',
+  path: '/medico/$id/agendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
   '/chat/$id': typeof ChatIdRoute
+  '/medico/$id/agendar': typeof MedicoIdAgendarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
   '/chat/$id': typeof ChatIdRoute
+  '/medico/$id/agendar': typeof MedicoIdAgendarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/soporte': typeof SoporteRoute
   '/welcome': typeof WelcomeRoute
   '/chat/$id': typeof ChatIdRoute
+  '/medico/$id/agendar': typeof MedicoIdAgendarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/soporte'
     | '/welcome'
     | '/chat/$id'
+    | '/medico/$id/agendar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/soporte'
     | '/welcome'
     | '/chat/$id'
+    | '/medico/$id/agendar'
   id:
     | '__root__'
     | '/'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/soporte'
     | '/welcome'
     | '/chat/$id'
+    | '/medico/$id/agendar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -236,6 +248,7 @@ export interface RootRouteChildren {
   SoporteRoute: typeof SoporteRoute
   WelcomeRoute: typeof WelcomeRoute
   ChatIdRoute: typeof ChatIdRoute
+  MedicoIdAgendarRoute: typeof MedicoIdAgendarRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -352,6 +365,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/medico/$id/agendar': {
+      id: '/medico/$id/agendar'
+      path: '/medico/$id/agendar'
+      fullPath: '/medico/$id/agendar'
+      preLoaderRoute: typeof MedicoIdAgendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -372,17 +392,8 @@ const rootRouteChildren: RootRouteChildren = {
   SoporteRoute: SoporteRoute,
   WelcomeRoute: WelcomeRoute,
   ChatIdRoute: ChatIdRoute,
+  MedicoIdAgendarRoute: MedicoIdAgendarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
