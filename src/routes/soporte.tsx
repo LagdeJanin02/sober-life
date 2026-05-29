@@ -13,16 +13,53 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { profileKey } from "@/lib/auth";
 
 export const Route = createFileRoute("/soporte")({
   component: Soporte,
 });
 
+interface SupportTicket {
+  id: string;
+  topic: string;
+  email: string;
+  message: string;
+  createdAt: string;
+}
+
+function saveTicket(ticket: SupportTicket) {
+  if (typeof window === "undefined") return;
+  try {
+    const raw = localStorage.getItem(profileKey("support_tickets"));
+    const list: SupportTicket[] = raw ? JSON.parse(raw) : [];
+    localStorage.setItem(profileKey("support_tickets"), JSON.stringify([...list, ticket]));
+  } catch {
+    /* almacenamiento no disponible */
+  }
+}
+
 function Soporte() {
   const [topic, setTopic] = React.useState("tecnico");
+  const [email, setEmail] = React.useState("");
+  const [message, setMessage] = React.useState("");
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email.trim() || !message.trim()) {
+      toast.error("Completa tu correo y el mensaje.");
+      return;
+    }
+    saveTicket({
+      id: crypto.randomUUID(),
+      topic,
+      email: email.trim(),
+      message: message.trim(),
+      createdAt: new Date().toISOString(),
+    });
     toast.success("Mensaje enviado. Te responderemos en 24h.");
+    setEmail("");
+    setMessage("");
+    setTopic("tecnico");
   };
   return (
     <div className="px-5 pt-10 pb-4">
@@ -56,6 +93,8 @@ function Soporte() {
             <Input
               type="email"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@correo.com"
               className="h-11 border-white/10 bg-white/5"
             />
@@ -65,6 +104,8 @@ function Soporte() {
             <Textarea
               required
               rows={5}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
               placeholder="Describe la situación con el mayor detalle posible..."
               className="border-white/10 bg-white/5"
             />

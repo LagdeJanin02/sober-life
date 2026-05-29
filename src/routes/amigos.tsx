@@ -6,8 +6,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BackButton } from "@/components/back-button";
-import { FRIENDS, FRIEND_REQUESTS, GROUPS } from "@/lib/friends";
+import { GROUPS } from "@/lib/friends";
 import { ensureCode } from "@/lib/auth";
+import { useFriends } from "@/hooks/use-friends";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/amigos")({
@@ -16,8 +17,8 @@ export const Route = createFileRoute("/amigos")({
 
 function Amigos() {
   const [code, setCode] = React.useState("SL-XXXXXX");
-  const [reqs, setReqs] = React.useState(FRIEND_REQUESTS);
   const [addCode, setAddCode] = React.useState("");
+  const { friends, requests: reqs, addByCode, acceptRequest, rejectRequest } = useFriends();
 
   React.useEffect(() => setCode(ensureCode()), []);
 
@@ -29,8 +30,13 @@ function Amigos() {
   const send = (e: React.FormEvent) => {
     e.preventDefault();
     if (!addCode.trim()) return;
-    toast.success(`Solicitud enviada a ${addCode}`);
-    setAddCode("");
+    const res = addByCode(addCode);
+    if (res.ok) {
+      toast.success(`Solicitud enviada a ${addCode.trim().toUpperCase()}`);
+      setAddCode("");
+    } else {
+      toast.error(res.error ?? "No se pudo enviar la solicitud");
+    }
   };
 
   return (
@@ -69,10 +75,10 @@ function Amigos() {
       </form>
 
       <h2 className="mb-2 text-sm font-medium uppercase tracking-wider text-muted-foreground">
-        Amigos ({FRIENDS.length})
+        Amigos ({friends.length})
       </h2>
       <div className="mb-6 space-y-2">
-        {FRIENDS.map((f) => (
+        {friends.map((f) => (
           <Link
             key={f.id}
             to="/chat/$id"
@@ -126,7 +132,7 @@ function Amigos() {
                   className="h-8 w-8 gradient-bg"
                   aria-label="Aceptar"
                   onClick={() => {
-                    setReqs((p) => p.filter((x) => x.id !== r.id));
+                    acceptRequest(r.id);
                     toast.success(`Ahora son amigos`);
                   }}
                 >
@@ -137,7 +143,7 @@ function Amigos() {
                   variant="outline"
                   aria-label="Rechazar"
                   className="h-8 w-8 border-white/10 bg-white/5"
-                  onClick={() => setReqs((p) => p.filter((x) => x.id !== r.id))}
+                  onClick={() => rejectRequest(r.id)}
                 >
                   <X className="h-4 w-4" />
                 </Button>

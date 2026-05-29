@@ -12,7 +12,11 @@ export const Route = createFileRoute("/casi-caigo")({
 
 // Función global de apoyo solicitada por el usuario (TTS).
 const reproducirMensajeApoyo = () => {
-  if (typeof window !== "undefined" && window.speechSynthesis) {
+  try {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      console.error("El navegador o dispositivo actual no soporta la síntesis de voz (SpeechSynthesis).");
+      return;
+    }
     const synth = window.speechSynthesis;
     synth.cancel();
     const textoMotivacional =
@@ -23,28 +27,15 @@ const reproducirMensajeApoyo = () => {
     msg.rate = 0.85;
     msg.pitch = 1.1;
     synth.speak(msg);
-  } else {
-    console.error("El navegador o dispositivo actual no soporta la síntesis de voz (SpeechSynthesis).");
+  } catch {
+    // Algunos navegadores bloquean el autoplay de audio; no debe romper la pantalla.
   }
-};
-
-const verificarSesionDispositivo = () => {
-  if (typeof window !== "undefined" && window.localStorage) {
-    try {
-      return localStorage.getItem("soberlife_session");
-    } catch {
-      console.warn("localStorage no disponible o bloqueado por políticas de privacidad.");
-      return null;
-    }
-  }
-  return null;
 };
 
 function CasiCaigo() {
   const router = useRouter();
 
   React.useEffect(() => {
-    verificarSesionDispositivo();
     reproducirMensajeApoyo();
     return () => {
       if (typeof window !== "undefined" && window.speechSynthesis) {

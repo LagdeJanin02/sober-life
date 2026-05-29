@@ -33,18 +33,22 @@ export interface GroupRoom {
 
 const minsAgo = (n: number) => new Date(Date.now() - n * 60_000).toISOString();
 
-export const FRIENDS: Friend[] = [
+/**
+ * Datos semilla. Se usan para poblar el almacenamiento por-perfil la primera vez
+ * (ver use-friends.ts / use-chat.ts). A partir de ahí, la fuente de verdad es localStorage.
+ */
+export const SEED_FRIENDS: Friend[] = [
   { id: "f1", code: "SL-K9X7M2", name: "María C.", avatar: "🌷", status: "online", streak: 42, lastMessage: "¡Gracias por el ánimo de ayer! 💜" },
   { id: "f2", code: "SL-B3T8WQ", name: "Diego R.", avatar: "🌊", status: "online", streak: 18, lastMessage: "Voy a la junta del jueves, ¿vienes?" },
   { id: "f3", code: "SL-V5N2KP", name: "Luna A.", avatar: "🌙", status: "offline", streak: 7, lastMessage: "Buenas noches, mañana día 8 🎉" },
 ];
 
-export const FRIEND_REQUESTS: FriendRequest[] = [
+export const SEED_FRIEND_REQUESTS: FriendRequest[] = [
   { id: "r1", direction: "in", code: "SL-Q8M3X1", name: "Pedro M.", avatar: "⚓" },
   { id: "r2", direction: "out", code: "SL-J7P9LN", name: "Sofía V.", avatar: "🦋" },
 ];
 
-export const CHATS: Record<string, ChatMessage[]> = {
+export const SEED_CHATS: Record<string, ChatMessage[]> = {
   f1: [
     { id: "m1", from: "f1", text: "Hoy cumplo 42 días sin azúcar 🎉", time: minsAgo(120) },
     { id: "m2", from: "me", text: "¡Increíble! Eres mi inspiración 💪", time: minsAgo(115) },

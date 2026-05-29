@@ -1,11 +1,11 @@
-import * as React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Trophy, Lock, Check, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useHabits } from "@/hooks/use-habits";
+import { useChallenges } from "@/hooks/use-challenges";
 import { MEDALS, tierColor, type Medal } from "@/lib/soberlife";
-import { INITIAL_CHALLENGES, type Challenge } from "@/lib/challenges";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/retos")({
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/retos")({
 function Retos() {
   const { habits } = useHabits();
   const bestStreak = habits.reduce((m, h) => Math.max(m, h.bestStreak, h.currentDays), 0);
-  const [challenges, setChallenges] = React.useState<Challenge[]>(INITIAL_CHALLENGES);
+  const { items: challenges, toggle } = useChallenges();
 
   return (
     <div className="px-5 pt-10 pb-4">
@@ -51,11 +51,16 @@ function Retos() {
             )}
           >
             <button
-              onClick={() =>
-                setChallenges((prev) =>
-                  prev.map((x) => (x.id === c.id ? { ...x, done: !x.done } : x)),
-                )
-              }
+              onClick={() => {
+                const updated = toggle(c.id);
+                if (updated?.done && updated.rewardTheme) {
+                  toast.success(`¡Reto completado! Has desbloqueado: ${updated.rewardTheme} ✨`, {
+                    duration: 4000,
+                  });
+                } else if (updated?.done) {
+                  toast.success("¡Reto completado! 🎉");
+                }
+              }}
               className={cn(
                 "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border",
                 c.done ? "border-emerald-400 bg-emerald-400/20" : "border-white/20 bg-white/5",

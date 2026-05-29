@@ -4,7 +4,8 @@ import { Send } from "lucide-react";
 import { BackButton } from "@/components/back-button";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FRIENDS, CHATS, type ChatMessage } from "@/lib/friends";
+import { useFriends } from "@/hooks/use-friends";
+import { useChat } from "@/hooks/use-chat";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/chat/$id")({
@@ -13,8 +14,9 @@ export const Route = createFileRoute("/chat/$id")({
 
 function Chat() {
   const { id } = Route.useParams();
-  const friend = FRIENDS.find((f) => f.id === id);
-  const [messages, setMessages] = React.useState<ChatMessage[]>(CHATS[id] ?? []);
+  const { friends, ready } = useFriends();
+  const friend = friends.find((f) => f.id === id);
+  const { messages, send: sendMessage } = useChat(id);
   const [text, setText] = React.useState("");
   const endRef = React.useRef<HTMLDivElement>(null);
 
@@ -23,6 +25,8 @@ function Chat() {
   }, [messages]);
 
   if (!friend) {
+    // Mientras cargan los amigos desde localStorage, no mostramos "no encontrado".
+    if (!ready) return null;
     return (
       <div className="px-5 pt-16">
         <BackButton to="/amigos" />
@@ -34,26 +38,8 @@ function Chat() {
   const send = (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
-    const me: ChatMessage = {
-      id: crypto.randomUUID(),
-      from: "me",
-      text,
-      time: new Date().toISOString(),
-    };
-    setMessages((p) => [...p, me]);
+    sendMessage(text);
     setText("");
-    // simulated reply
-    setTimeout(() => {
-      setMessages((p) => [
-        ...p,
-        {
-          id: crypto.randomUUID(),
-          from: friend.id,
-          text: "¡Te entiendo! Aquí estamos 💜",
-          time: new Date().toISOString(),
-        },
-      ]);
-    }, 1200);
   };
 
   return (
