@@ -5,7 +5,7 @@ import { SEED_CHATS, type ChatMessage } from "@/lib/friends";
 const EVENT = "soberlife:chat";
 
 function storageKey(friendId: string) {
-  return profileKey(`chat:${friendId}`);
+  return profileKey(`chat2:${friendId}`);
 }
 
 function load(friendId: string): ChatMessage[] {

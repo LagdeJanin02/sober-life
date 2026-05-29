@@ -2,7 +2,7 @@ import * as React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Calendar, MapPin, Video, Users, Coffee, CheckCircle2, X,
-  Stethoscope, MessageSquare,
+  Stethoscope, MessageSquare, UserPlus,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { COMMUNITY_EVENTS, type CommunityEvent } from "@/lib/community";
 import { useEnrollments } from "@/hooks/use-enrollments";
 import { useAppointments } from "@/hooks/use-appointments";
+import { useFriends } from "@/hooks/use-friends";
 
 export const Route = createFileRoute("/comunidad")({
   component: Comunidad,
@@ -36,6 +37,8 @@ function iconFor(t: CommunityEvent["type"]) {
 function Comunidad() {
   const enrollments = useEnrollments();
   const appointments = useAppointments();
+  const { friends } = useFriends();
+  const hasFriends = friends.length > 0;
 
   return (
     <div className="px-5 pt-10 pb-4">
@@ -212,11 +215,21 @@ function Comunidad() {
             <Users className="mx-auto h-8 w-8 text-violet-300" />
             <p className="mt-3 text-sm font-semibold">Red privada de amigos</p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Añade amigos por código único y chatea con ellos.
+              {hasFriends
+                ? "Abre tu red para chatear con tus amigos."
+                : "Aún no tienes amigos. Añade a alguien por su código único."}
             </p>
             <Button asChild className="mt-4 h-10 w-full gradient-bg">
               <Link to="/amigos">
-                <MessageSquare className="mr-2 h-4 w-4" /> Abrir amigos y chat
+                {hasFriends ? (
+                  <>
+                    <MessageSquare className="mr-2 h-4 w-4" /> Abrir amigos y chat
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="mr-2 h-4 w-4" /> Añadir amigos
+                  </>
+                )}
               </Link>
             </Button>
           </Card>

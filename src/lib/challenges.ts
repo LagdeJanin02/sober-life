@@ -18,7 +18,7 @@ export const INITIAL_CHALLENGES: Challenge[] = [
     id: "c2",
     title: "7 días seguidos registrando el contador",
     description: "Pulsa 'Aumentar día' siete días consecutivos.",
-    done: true,
+    done: false,
   },
   {
     id: "c3",
@@ -31,7 +31,7 @@ export const INITIAL_CHALLENGES: Challenge[] = [
     title: "Lee 3 fichas de la enciclopedia",
     description: "Aprender desarma al hábito.",
     rewardTheme: "Tema Esmeralda",
-    done: true,
+    done: false,
   },
   {
     id: "c5",

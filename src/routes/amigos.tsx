@@ -18,7 +18,16 @@ export const Route = createFileRoute("/amigos")({
 function Amigos() {
   const [code, setCode] = React.useState("SL-XXXXXX");
   const [addCode, setAddCode] = React.useState("");
-  const { friends, requests: reqs, addByCode, acceptRequest, rejectRequest } = useFriends();
+  const {
+    friends,
+    requests: reqs,
+    addByCode,
+    acceptRequest,
+    rejectRequest,
+    joinGroup,
+    leaveGroup,
+    isInGroup,
+  } = useFriends();
 
   React.useEffect(() => setCode(ensureCode()), []);
 
@@ -78,6 +87,11 @@ function Amigos() {
         Amigos ({friends.length})
       </h2>
       <div className="mb-6 space-y-2">
+        {friends.length === 0 && (
+          <Card className="glass border-0 p-4 text-center text-xs text-muted-foreground">
+            Aún no tienes amigos. Añade a alguien con su código <span className="font-mono">SL-XXXXXX</span> arriba.
+          </Card>
+        )}
         {friends.map((f) => (
           <Link
             key={f.id}
@@ -114,6 +128,11 @@ function Amigos() {
         Solicitudes
       </h2>
       <div className="mb-6 space-y-2">
+        {reqs.length === 0 && (
+          <Card className="glass border-0 p-4 text-center text-xs text-muted-foreground">
+            No tienes solicitudes pendientes.
+          </Card>
+        )}
         {reqs.map((r) => (
           <Card key={r.id} className="glass flex items-center gap-3 border-0 p-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-lg">
@@ -159,23 +178,39 @@ function Amigos() {
         <Users className="h-4 w-4" /> Salas grupales
       </h2>
       <div className="space-y-2">
-        {GROUPS.map((g) => (
-          <Card key={g.id} className="glass border-0 p-3">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold">{g.name}</p>
-              <span className="text-[10px] text-muted-foreground">{g.members} miembros</span>
-            </div>
-            <p className="mt-0.5 text-xs text-muted-foreground">{g.topic}</p>
-            <p className="mt-1.5 truncate text-xs text-violet-200">{g.lastMessage}</p>
-            <Button
-              size="sm"
-              className="mt-2 h-8 gradient-bg text-xs"
-              onClick={() => toast.success(`Te uniste a ${g.name}`)}
-            >
-              Unirme
-            </Button>
-          </Card>
-        ))}
+        {GROUPS.map((g) => {
+          const joined = isInGroup(g.id);
+          return (
+            <Card key={g.id} className="glass border-0 p-3">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold">{g.name}</p>
+                <span className="text-[10px] text-muted-foreground">
+                  {joined ? g.members + 1 : g.members} miembros
+                </span>
+              </div>
+              <p className="mt-0.5 text-xs text-muted-foreground">{g.topic}</p>
+              <p className="mt-1.5 truncate text-xs text-violet-200">{g.lastMessage}</p>
+              <Button
+                size="sm"
+                className={cn(
+                  "mt-2 h-8 text-xs",
+                  joined ? "bg-emerald-500/20 text-emerald-200 hover:bg-emerald-500/20" : "gradient-bg",
+                )}
+                onClick={() => {
+                  if (joined) {
+                    leaveGroup(g.id);
+                    toast.success(`Saliste de ${g.name}`);
+                  } else {
+                    joinGroup(g.id);
+                    toast.success(`Te uniste a ${g.name} 🎉`);
+                  }
+                }}
+              >
+                {joined ? "Unido ✓ · Salir" : "Unirme"}
+              </Button>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );

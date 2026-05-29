@@ -13,6 +13,7 @@ import {
 import {
   ADDICTIONS,
   CATEGORY_LABELS,
+  getAddiction,
   type Addiction,
   type AddictionCategory,
 } from "@/lib/addictions";
@@ -70,7 +71,7 @@ function Enciclopedia() {
               {grouped[cat].map((a) => (
                 <button
                   key={a.id}
-                  onClick={() => setOpen(a)}
+                  onClick={() => setOpen(getAddiction(a.id) ?? a)}
                   className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3 text-left transition-all hover:bg-white/10"
                 >
                   <span className="text-xl">{a.emoji}</span>
