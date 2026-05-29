@@ -89,64 +89,22 @@ export function minutesToMidnight(now: Date = new Date()): number {
   return Math.max(0, Math.floor((next.getTime() - now.getTime()) / 60000));
 }
 
-const STORAGE_KEY = "soberlife.habits.v1";
+import { profileKey } from "./auth";
 
-function seed(): Habit[] {
-  const now = new Date();
-  const isoDaysAgo = (n: number) => {
-    const d = new Date(now);
-    d.setDate(d.getDate() - n);
-    return d.toISOString();
-  };
-  const keyDaysAgo = (n: number) => {
-    const d = new Date(now);
-    d.setDate(d.getDate() - n);
-    return todayKey(d);
-  };
-  return [
-    {
-      id: crypto.randomUUID(),
-      name: "Sin Fumar",
-      type: "fumar",
-      addictionId: "tabaco",
-      startDate: isoDaysAgo(15),
-      reason: "Quiero recuperar mi respiración y disfrutar correr de nuevo.",
-      currentDays: 15,
-      lastIncrementDate: keyDaysAgo(0),
-      bestStreak: 15,
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Sin Alcohol",
-      type: "alcohol",
-      addictionId: "alcohol",
-      startDate: isoDaysAgo(5),
-      reason: "Por mi familia y por dormir tranquilo.",
-      currentDays: 5,
-      lastIncrementDate: keyDaysAgo(0),
-      bestStreak: 9,
-    },
-  ];
-}
-
+/** Estado inicial vacío: la app arranca SIN datos hasta que el usuario los cree. */
 export function loadHabits(): Habit[] {
   if (typeof window === "undefined") return [];
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      const s = seed();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-      return s;
-    }
-    return JSON.parse(raw) as Habit[];
+    const raw = localStorage.getItem(profileKey("habits"));
+    return raw ? (JSON.parse(raw) as Habit[]) : [];
   } catch {
-    return seed();
+    return [];
   }
 }
 
 export function saveHabits(habits: Habit[]) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
+  localStorage.setItem(profileKey("habits"), JSON.stringify(habits));
 }
 
 export function tierColor(tier: Medal["tier"]): string {
