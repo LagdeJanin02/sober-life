@@ -15,6 +15,9 @@ import appCss from "../styles.css?url";
 import { BottomNav } from "@/components/bottom-nav";
 import { Toaster } from "@/components/ui/sonner";
 import { loadSession, PUBLIC_ROUTES } from "@/lib/auth";
+import { pushToHistory } from "@/lib/nav-history";
+import { initTheme } from "@/lib/theme";
+import { initA11y } from "@/lib/accessibility";
 
 function NotFoundComponent() {
   return (
@@ -134,8 +137,22 @@ function AuthGate() {
   const navigate = useNavigate();
   const [authed, setAuthed] = React.useState<boolean | null>(null);
 
+  // Inicializa tema y accesibilidad una sola vez (cliente).
   React.useEffect(() => {
-    setAuthed(!!loadSession());
+    initTheme();
+    initA11y();
+  }, []);
+
+  // Stack global de historial: registra cada cambio de ruta.
+  React.useEffect(() => {
+    pushToHistory(pathname);
+  }, [pathname]);
+
+  React.useEffect(() => {
+    const refresh = () => setAuthed(!!loadSession());
+    refresh();
+    window.addEventListener("soberlife:profile-change", refresh);
+    return () => window.removeEventListener("soberlife:profile-change", refresh);
   }, [pathname]);
 
   React.useEffect(() => {

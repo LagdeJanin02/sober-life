@@ -1,16 +1,24 @@
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { popFromHistory } from "@/lib/nav-history";
 
+/**
+ * Botón "← Regresar" global. Por defecto saca la ruta actual del stack
+ * de historial y navega exactamente a la pantalla anterior.
+ * `to` solo se usa como fallback si el stack está vacío.
+ */
 export function BackButton({ to }: { to?: string }) {
   const router = useRouter();
   return (
     <Button
       variant="ghost"
       size="icon"
-      aria-label="Volver"
+      aria-label="Regresar"
       onClick={() => {
-        if (to) router.navigate({ to });
+        const prev = popFromHistory();
+        if (prev) router.navigate({ to: prev });
+        else if (to) router.navigate({ to });
         else router.history.back();
       }}
       className="fixed left-3 top-3 z-40 h-10 w-10 rounded-full border border-white/10 bg-black/40 backdrop-blur hover:bg-white/10"
