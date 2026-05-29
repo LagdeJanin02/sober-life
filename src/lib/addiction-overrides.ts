@@ -191,4 +191,130 @@ export const OVERRIDES: Record<string, Partial<Pick<Addiction, "info" | "causes"
       "Hobby creativo que produzca, no que consuma",
     ],
   },
+  cocaina: {
+    info: "Trastorno por uso de cocaína. Estimulante que multiplica la dopamina sináptica al bloquear su recaptación; el bajón posterior empuja a re-dosificar.",
+    causes: [
+      "Búsqueda de euforia en entornos de fiesta y riesgo",
+      "Industria laboral con jornadas extremas (finanzas, hospitality)",
+      "Cultura aspiracional asociada a estatus y poder",
+      "Co-uso con alcohol que reduce la percepción de daño",
+    ],
+    symptoms: [
+      "Dilatación pupilar marcada y congestión nasal crónica",
+      "Insomnio de varios días seguidos con energía artificial",
+      "Paranoia, irritabilidad y agresividad post-consumo",
+      "Dolor torácico y arritmias cardíacas",
+    ],
+    solutions: [
+      "Internamiento o hospital de día durante el bajón inicial",
+      "Cortar contactos del círculo de consumo (números, lugares)",
+      "Manejo médico de comorbilidades cardíacas",
+      "Terapia de prevención de recaídas con foco en entornos sociales",
+    ],
+  },
+  marihuana: {
+    info: "Trastorno por uso de cannabis. El THC modula los receptores CB1 cerebrales; el uso diario en jóvenes está vinculado a déficit de memoria y trastornos psicóticos.",
+    causes: [
+      "Percepción social de 'droga blanda inofensiva'",
+      "Auto-medicación de insomnio y ansiedad",
+      "Ritual social: porro al final del día",
+      "Acceso legalizado o decomercializado en aumento",
+    ],
+    symptoms: [
+      "Pérdida de memoria a corto plazo y dificultad de concentración",
+      "Apatía sostenida y abandono de proyectos (síndrome amotivacional)",
+      "Tos crónica y bronquitis recurrente",
+      "Crisis de ansiedad o paranoia con cepas altas en THC",
+    ],
+    solutions: [
+      "Eliminar parafernalia (pipas, papel) de la vista",
+      "Sustituir el ritual nocturno por té relajante o ejercicio suave",
+      "Pedir analítica médica a los 30 días para mostrar mejoría",
+      "Terapia cognitivo-conductual breve enfocada en cannabis",
+    ],
+  },
+  heroina: {
+    info: "Dependencia a opiáceos ilegales. La heroína atraviesa la barrera hematoencefálica en segundos, generando una de las dependencias físicas más severas conocidas.",
+    causes: [
+      "Escalada desde analgésicos opioides recetados",
+      "Trauma severo no tratado (combate, abuso)",
+      "Entornos de marginación y exclusión social",
+      "Anestesia química frente al dolor emocional",
+    ],
+    symptoms: [
+      "Calambres musculares intensos y dolor óseo",
+      "Náuseas, vómitos y diarrea explosiva al retirar",
+      "Sudoración profusa, piloerección (piel de gallina)",
+      "Rinorrea, lagrimeo y bostezos compulsivos",
+    ],
+    solutions: [
+      "Tratamiento sustitutivo con metadona o buprenorfina",
+      "Naloxona disponible en casa por riesgo de sobredosis",
+      "Programa de reducción de daños con jeringas estériles",
+      "Vivienda y empleo asistido durante los primeros 6 meses",
+    ],
+  },
+  comida: {
+    info: "Trastorno por atracón. Episodios de ingesta rápida y descontrolada de grandes cantidades, sin conducta compensatoria, acompañados de vergüenza intensa.",
+    causes: [
+      "Restricción dietética extrema que dispara rebote",
+      "Regulación emocional mediante azúcar y grasas (comfort food)",
+      "Historia de dietas yo-yo desde la infancia",
+      "Imagen corporal distorsionada y baja autoestima",
+    ],
+    symptoms: [
+      "Comer hasta sentir malestar físico doloroso",
+      "Esconder envoltorios y comer a escondidas",
+      "Atracones nocturnos en soledad",
+      "Culpa y disforia post-atracón que dura horas",
+    ],
+    solutions: [
+      "Comer 5 veces al día con horarios fijos (no restringir)",
+      "Identificar emoción detonante antes de abrir el refrigerador",
+      "Terapia con nutricionista no-dietista + psicólogo",
+      "Eliminar balanzas y espejos provocadores durante 90 días",
+    ],
+  },
+  trabajo: {
+    info: "Workaholism. Adicción al trabajo donde la productividad y el rendimiento se vuelven el único marcador de autovaloración, desplazando salud y vínculos.",
+    causes: [
+      "Identidad construida sobre logros profesionales",
+      "Miedo al vacío y a la introspección",
+      "Cultura empresarial que premia el burnout",
+      "Validación parental condicionada al éxito",
+    ],
+    symptoms: [
+      "Revisar el correo en vacaciones, comidas y cama",
+      "Imposibilidad de desconectar fines de semana",
+      "Hipertensión, gastritis y problemas de espalda",
+      "Distanciamiento de pareja e hijos sin notarlo",
+    ],
+    solutions: [
+      "Apagado total de notificaciones laborales después de las 7 pm",
+      "Agenda obligatoria de ocio no-productivo (sin metas)",
+      "Terapia de identidad: '¿quién eres si no trabajas?'",
+      "Vacaciones reales mínimo de 10 días seguidos al año",
+    ],
+  },
+  benzodiacepinas: {
+    info: "Dependencia a tranquilizantes (clonazepam, alprazolam, diazepam). Potencian el GABA cerebral; al retirarlas el sistema rebota y puede causar convulsiones mortales.",
+    causes: [
+      "Prescripción prolongada sin reevaluación médica",
+      "Auto-medicación para crisis de pánico",
+      "Acceso fácil en farmacias de la región",
+      "Combinación con alcohol u opiáceos para potenciar efecto",
+    ],
+    symptoms: [
+      "Tolerancia progresiva: la misma dosis ya no calma",
+      "Insomnio severo y pesadillas al saltarse una toma",
+      "Temblores, sudoración y crisis de pánico de rebote",
+      "Riesgo de convulsiones si se corta de golpe",
+    ],
+    solutions: [
+      "Reducción gradual supervisada (10% cada 2 semanas)",
+      "Conversión a diazepam de vida media larga para retiro suave",
+      "TCC para pánico que reemplace la función química",
+      "Nunca suspender abruptamente sin acompañamiento médico",
+    ],
+  },
 };
