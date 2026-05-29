@@ -14,6 +14,7 @@ export interface Professional {
   bio: string;
   rating: number;
   fee: string;
+  feeUSD: number;
   avatar: string; // emoji
   treats: string[]; // addiction ids
 }
@@ -101,6 +102,7 @@ export const PROFESSIONALS: Professional[] = Array.from({ length: 50 }, (_, i) =
     bio: BIOS[i % BIOS.length],
     rating: Math.round((4.3 + (i % 7) * 0.1) * 10) / 10,
     fee: `USD ${fee} / RD$ ${fee * 60} por sesión`,
+    feeUSD: fee,
     avatar: AV[i % AV.length],
     treats: spec.treats.slice(0, 1 + (i % 5)),
   };
