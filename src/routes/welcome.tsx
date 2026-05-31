@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ChevronRight, Sparkles, Trophy, Users, BookOpen } from "lucide-react";
+import { Sparkles, Trophy, Users, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -36,10 +36,13 @@ function Welcome() {
   const [i, setI] = React.useState(0);
   const Icon = STEPS[i].icon;
   const last = i === STEPS.length - 1;
+  const first = i === 0;
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)] flex-col px-5 pt-12">
-      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Bienvenido</p>
+      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        Bienvenido
+      </p>
       <h1 className="mt-1 text-3xl font-semibold">
         Empieza tu <span className="gradient-text">SoberLife</span>
       </h1>
@@ -52,7 +55,6 @@ function Welcome() {
         <p className="mt-3 text-center text-sm leading-relaxed text-muted-foreground">
           {STEPS[i].text}
         </p>
-
         <div className="mt-8 flex justify-center gap-1.5">
           {STEPS.map((_, idx) => (
             <span
@@ -69,16 +71,15 @@ function Welcome() {
         <Button
           variant="outline"
           className="flex-1 border-white/10 bg-white/5"
-          onClick={() => navigate({ to: "/login" })}
+          onClick={() => (first ? navigate({ to: "/login" }) : setI(i - 1))}
         >
-          Saltar
+          {first ? "Saltar" : "Atrás"}
         </Button>
         <Button
           className="flex-1 gradient-bg"
           onClick={() => (last ? navigate({ to: "/login" }) : setI(i + 1))}
         >
           {last ? "Crear cuenta" : "Siguiente"}
-          <ChevronRight className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>
