@@ -111,7 +111,7 @@ function ElegirAdiccion() {
       setQ("");
       setSymptom("");
     } else {
-      navigate({ to: "/login" });
+      navigate({ to: "/login", search: { tab: "register" } });
     }
   };
 
