@@ -49,7 +49,7 @@ function LoginPage() {
       </Card>
 
       <Card className="glass border-0 p-5">
-        <Tabs defaultValue="login">
+        <Tabs defaultValue={new URLSearchParams(window.location.search).get("tab") ?? "login"}>
           <TabsList className="grid w-full grid-cols-2 bg-white/5">
             <TabsTrigger value="login">Iniciar sesión</TabsTrigger>
             <TabsTrigger value="register">Crear cuenta</TabsTrigger>
